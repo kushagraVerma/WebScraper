@@ -82,7 +82,7 @@ def writeScr(term,pgno,driver,writer):
         
         if i<pgno:
             randTime = 0.5+random()
-            print(f"\n[{print_as}] Waiting for {randTime} seconds before loading next page...")
+            print(f"[{print_as}] Waiting for {randTime} seconds before loading next page...")
             sleep(randTime)
 
 def getURL(term,page):
