@@ -6,7 +6,6 @@ from chrdriver import waitNLoad
 folder = "flipkart"
 
 def parseOne(resElt):
-    # print(resElt.text)
     l = ["N/A"]
 
     titleS = "DIDNOTLOAD"
@@ -19,7 +18,6 @@ def parseOne(resElt):
 
     starS = "DIDNOTLOAD"
     try:
-        # starS = resElt.find_element_by_xpath(".//div[@class='_3LWZlKT']").text
         starDiv = waitNLoad(resElt, 1, 'XPATH', ".//div[@class='_3LWZlK']")
         starS = starDiv.text
     except:
@@ -39,7 +37,6 @@ def parseOne(resElt):
     priceS = "DIDNOTLOAD"
     try:
         priceDiv = resElt.find_element_by_xpath(".//div[contains(@class,'_30jeq3')]")
-        # print(priceDiv.text)
         priceS = priceDiv.text[1:]
     except:
         pass
@@ -71,25 +68,11 @@ def writeScr(term,pgno,driver,writer):
             numRes = len(children)
             print(f"[{print_as}] {numRes} results found")
             print(f"[{print_as}] Progress: ",end='')
-            # curr = 1
             for child in children:
-                # vals = None
-                # try:
-                #     childpath = ".//div[contains(@class,'s-list-col-right')]"
-                #     vals = child.find_element_by_xpath(childpath)
-                # except NoSuchElementException:
-                #     childpath = ".//div[contains(@class,'s-product-image-container')]"
-                #     imgDiv = child.find_element_by_xpath(childpath)
-                #     vals = imgDiv.find_element_by_xpath(".//following-sibling::div[1]")
-                # s = ""
-                # row = parseOne(vals)
-                # print(f"\n{child.text}\n")
                 row = parseOne(child)
                 resCnt += 1
                 row.extend([resCnt,i])
-                # print(row)
                 writer.writerow(row)
-                # curr += 1
                 if resCnt%(numRes//10)==0:
                     print('|',end='')
 

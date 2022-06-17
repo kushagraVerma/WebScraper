@@ -1,5 +1,6 @@
-import csv
+from os import path,makedirs
 from datetime import datetime
+import csv
 from consts import *
 from chrdriver import *
 from amazscr import amaztpl
@@ -38,7 +39,10 @@ except:
 print(f"[{print_as}] Connecting to Chrome via driver")
 driver = getDriver(chrome_driver_path)
 dt = str(datetime.now()).replace(':','-')
-fpath = f"scrapedump/{folder}/{term}@{dt}.csv"
+dirpath = f"scrapedump/{folder}"
+if not path.exists(dirpath):
+    makedirs(dirpath)
+fpath = f"{dirpath}/{term}@{dt}.csv"
 FILE = open(fpath,"a",encoding="utf-8",newline='')
 
 print(f"[{print_as}] Writing to {fpath}")

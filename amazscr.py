@@ -84,10 +84,6 @@ def parseOne(resElt):
 
     primeS = "NO"
     try:
-        # primeSpan = resElt.find_elements_by_xpath(".//i[@aria-label='Amazon Prime']")
-        # primeSpan = WebDriverWait(resElt, 0.5).until(
-        #     EC.presence_of_element_located((By.XPATH, ".//i[@aria-label='Amazon Prime']"))
-        # )
         primeSpan = waitNLoad(resElt, 0.5, 'XPATH', ".//i[@aria-label='Amazon Prime']")
         primeS = ("YES" if primeSpan else "NO")
     except:
@@ -107,14 +103,8 @@ def writeScr(term,pgno,driver,writer):
         driver.get(urli)
         try:
             reslistPath = "//div[contains(@class,'s-main-slot')]"
-            # element = WebDriverWait(driver, 1).until(
-            #     EC.presence_of_element_located((By.XPATH, reslistPath))
-            # )
             element = waitNLoad(driver, 1, 'XPATH', reslistPath)
             resXpath = ".//div[@data-component-type='s-search-result']"
-            # element = WebDriverWait(driver, 1).until(
-            #     EC.presence_of_element_located((By.XPATH, resXpath))
-            # )
             children = element.find_elements_by_xpath(resXpath)
             numRes = len(children)
             print(f"[{print_as}] {numRes} results found")
@@ -128,13 +118,10 @@ def writeScr(term,pgno,driver,writer):
                     childpath = ".//div[contains(@class,'s-product-image-container')]"
                     imgDiv = child.find_element_by_xpath(childpath)
                     vals = imgDiv.find_element_by_xpath(".//following-sibling::div[1]")
-                # s = ""
                 row = parseOne(vals)
                 resCnt += 1
                 row.extend([resCnt,i])
-                # print(row)
                 writer.writerow(row)
-                # curr += 1
                 if resCnt%(numRes//10)==0:
                     print('|',end='')
 
