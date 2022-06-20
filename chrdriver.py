@@ -20,10 +20,15 @@ def getDriver(driver_path):
     }
     chrome_options.experimental_options["prefs"] = chrome_prefs
 
+    caps = webdriver.DesiredCapabilities.CHROME.copy()
+    caps['acceptInsecureCerts'] = True
+    caps['acceptSslCerts'] = True
+
     driver = webdriver.Chrome(
         # options=options, 
         executable_path=driver_path,
-        options=chrome_options
+        options=chrome_options,
+        desired_capabilities=caps
     )
 
     return driver

@@ -1,3 +1,4 @@
+from selenium.common.exceptions import NoSuchElementException
 from consts import print_as
 from random import random
 from time import sleep
@@ -82,19 +83,19 @@ def parseOne(resElt):
     # except:
     #     pass
 
-    primeS = "NO"
+    availS = "YES"
     try:
-        primeSpan = waitNLoad(resElt, 0.5, 'XPATH', ".//i[@aria-label='Amazon Prime']")
-        primeS = ("YES" if primeSpan else "NO")
+        availSpan = waitNLoad(resElt, 0.5, 'XPATH', ".//span[contains(@aria-label,'unavailable')]")
+        availS = ("NO" if availSpan else "YES")
     except:
         pass
     finally:
-        l.append(primeS)
+        l.append(availS)
 
     return l
 
 def writeScr(term,pgno,driver,writer):
-    writer.writerow(["Sponsored", "Title", "Stars (/5)", "Reviewers", "Price", "Prime","Result#","Page#"])
+    writer.writerow(["Sponsored", "Title", "Stars (/5)", "Reviewers", "Price", "Available","Result#","Page#"])
     resCnt = 0
     for i in range(1,pgno+1):
         urli = getURL(term, i)
@@ -135,6 +136,6 @@ def writeScr(term,pgno,driver,writer):
             sleep(randTime)
 
 def getURL(term,page):
-    return f"https://www.amazon.in/s?k={term}&page={page}"
+    return f"https://www.amazon.in/s?k={term}&page={page}&rh=p_n_availability%3A1318485031"
 
 amaztpl = (folder,writeScr)
