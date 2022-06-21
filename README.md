@@ -1,4 +1,4 @@
-<h1>Python webscraper using Selenium via Chrome driver</h1>
+<h1>Webscraper v3</h1>
 Currently scrapable: Amazon India, Flipkart<br>
 <h3>USAGE</h3>
 Required on your system:<br>
