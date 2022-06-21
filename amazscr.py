@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException
-from consts import print_as
+from helper import print_as,progBar
 from random import random
 from time import sleep
 from chrdriver import waitNLoad
@@ -109,7 +109,8 @@ def writeScr(term,pgno,driver,writer):
             children = element.find_elements_by_xpath(resXpath)
             numRes = len(children)
             print(f"[{print_as}] {numRes} results found")
-            print(f"[{print_as}] Progress: ",end='')
+            # print(f"[{print_as}] Progress: ",end='')
+            currCnt = 0
             for child in children:
                 vals = None
                 try:
@@ -121,10 +122,12 @@ def writeScr(term,pgno,driver,writer):
                     vals = imgDiv.find_element_by_xpath(".//following-sibling::div[1]")
                 row = parseOne(vals)
                 resCnt += 1
+                currCnt += 1
                 row.extend([resCnt,i])
                 writer.writerow(row)
-                if resCnt%(numRes//10)==0:
-                    print('|',end='')
+                # if resCnt%(numRes//10)==0:
+                #     print('|',end='')
+                progBar(currCnt,numRes)
 
         finally:
             print(" DONE")

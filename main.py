@@ -1,11 +1,11 @@
 from os import path,makedirs
 from datetime import datetime
 import csv
-from consts import *
+from helper import *
 from chrdriver import *
 from amazscr import amaztpl
 from flipscr import fliptpl
-
+# print(consts)
 # driver = getDriver(chrome_driver_path)
 
 def getSiteTpl():
@@ -37,7 +37,7 @@ except:
     print(f"[{print_as}] Defaulting to # of pages = 5")
 
 print(f"[{print_as}] Connecting to Chrome via driver")
-driver = getDriver(chrome_driver_path)
+driver = getDriver(consts['chrome_driver_path'])
 dt = str(datetime.now()).replace(':','-')
 dirpath = f"scrapedump/{folder}"
 if not path.exists(dirpath):

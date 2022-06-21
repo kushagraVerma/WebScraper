@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException
-from consts import print_as
+from helper import print_as,progBar
 from random import random
 from time import sleep
 from chrdriver import waitNLoad
@@ -132,14 +132,17 @@ def writeScr(term,pgno,driver,writer):
             print(f"[{print_as}] {numRes} results found")
             if(numRes==0):
                 break
-            print(f"[{print_as}] Progress: ",end='')
+            # print(f"[{print_as}] Progress: ",end='')
+            currCnt = 0
             for child in children:
                 row = parseOne(child)
                 resCnt += 1
+                currCnt += 1
                 row.extend([resCnt,i])
                 writer.writerow(row)
-                if resCnt%(numRes//10)==0:
-                    print('|',end='')
+                # if resCnt%(numRes//10)==0:
+                #     print('|',end='')                
+                progBar(currCnt,numRes)
 
         finally:
             print(" DONE")
