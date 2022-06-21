@@ -9,7 +9,7 @@ def loadConsts():
         d[spl[0]] = spl[1]
     return d
 consts = loadConsts()
-print_as = "Webscraper v2"
+print_as = "Webscraper v3"
 def progBar(done,total,prefix=f"[{print_as}]",ticks=10,fill='#',space='-'):
     # sys.stdout
     t = lambda x: int((x/total)*ticks)

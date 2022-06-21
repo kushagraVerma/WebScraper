@@ -1,3 +1,6 @@
 __pycache__
 scrapedump
+build
 todo.txt
+dist
+*.spec
