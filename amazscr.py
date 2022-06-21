@@ -99,7 +99,7 @@ def writeScr(term,pgno,driver,writer):
     resCnt = 0
     for i in range(1,pgno+1):
         urli = getURL(term, i)
-        print(f"\n[{print_as}] Scraping page: {urli}")
+        print(f"\n[{print_as}] Scraping page {i}: {urli}")
 
         driver.get(urli)
         try:

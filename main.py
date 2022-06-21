@@ -26,31 +26,41 @@ def getSiteTpl():
     return tplList[inp]
 
 print(f"*** Welcome to {print_as}! ***")
-folder,writeScr = getSiteTpl()
-term = input(f"[{print_as}] Enter search term: ").replace(' ','+')
-pgno = 5
-try:
-    pgno = int(input(f"[{print_as}] Enter # of pages to scrape (max=9, default=5): "))
-    assert pgno<10
-except:
-    pgno = 5
-    print(f"[{print_as}] Defaulting to # of pages = 5")
-
+runAgain = True
 print(f"[{print_as}] Connecting to Chrome via driver")
 driver = getDriver(consts['chrome_driver_path'])
-dt = str(datetime.now()).replace(':','-')
-dirpath = f"scrapedump/{folder}"
-if not path.exists(dirpath):
-    makedirs(dirpath)
-fpath = f"{dirpath}/{term}@{dt}.csv"
-FILE = open(fpath,"a",encoding="utf-8",newline='')
+while runAgain:
+    folder,writeScr = getSiteTpl()
+    while True:
+        term = input(f"[{print_as}] Enter search term: ").replace(' ','+')
+        if term=='':
+            print("Empty search term is not allowed!")
+        else:
+            break
+    pgno = 5
+    try:
+        pgno = int(input(f"[{print_as}] Enter # of pages to scrape (max=9, default=5): "))
+        assert pgno<10
+    except:
+        pgno = 5
+        print(f"[{print_as}] Defaulting to # of pages = 5")
 
-print(f"[{print_as}] Writing to {fpath}")
-writer = csv.writer(FILE)
-writeScr(term,pgno,driver,writer)
+    dt = str(datetime.now()).replace(':','-')
+    dirpath = f"scrapedump/{folder}"
+    if not path.exists(dirpath):
+        makedirs(dirpath)
+    fpath = f"{dirpath}/{term}@{dt}.csv"
+    FILE = open(fpath,"a",encoding="utf-8",newline='')
 
-print(f"[{print_as}] Closing file connection")
-FILE.close()
-print(f"[{print_as}] Closing driver connection and exiting")
+    print(f"[{print_as}] Writing to {fpath}")
+    writer = csv.writer(FILE)
+    writeScr(term,pgno,driver,writer)
+
+    print(f"[{print_as}] Closing file connection")
+    FILE.close()
+    
+    runAgain = (input(f"[{print_as}] Run another query? (Y/N) ")).upper() == 'Y'
+    
+print(f"[{print_as}] Closing driver connection")
 driver.quit()
 exitProg()
