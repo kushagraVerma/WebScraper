@@ -60,7 +60,7 @@ while runAgain:
     FILE.close()
     
     runAgain = (input(f"[{print_as}] Run another query? (Y/N) ")).upper() == 'Y'
-    
+
 print(f"[{print_as}] Closing driver connection")
 driver.quit()
-exitProg()
+input("Press ENTER to exit")

@@ -111,6 +111,7 @@ def parseOneB(resElt):
 def writeScr(term,pgno,driver,writer):
     writer.writerow(["Sponsored", "Title", "Stars (/5)", "Reviewers", "Price", "Available","Result#","Page#"])
     resCnt = 0
+    loop = True
     for i in range(1,pgno+1):
         urli = getURL(term, i)
         print(f"\n[{print_as}] Scraping page {i}: {urli}")
@@ -131,6 +132,7 @@ def writeScr(term,pgno,driver,writer):
             numRes = len(children)
             print(f"[{print_as}] {numRes} results found")
             if(numRes==0):
+                loop = False
                 break
             # print(f"[{print_as}] Progress: ",end='')
             currCnt = 0
@@ -147,7 +149,8 @@ def writeScr(term,pgno,driver,writer):
         finally:
             print(" DONE")
             pass
-        
+        if not loop:
+            break
         if i<pgno:
             randTime = 0.5+random()
             print(f"[{print_as}] Waiting for {randTime} seconds before loading next page...")
