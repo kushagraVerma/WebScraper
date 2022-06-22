@@ -44,6 +44,9 @@ while runAgain:
     except:
         pgno = 5
         print(f"[{print_as}] Defaulting to # of pages = 5")
+    
+    outStkMsg = f"[{print_as}] Include out of stock items? (This removes sponsored items on Amazon!) [Y/N(default)] "
+    outStk = (input(outStkMsg).upper() == 'Y')
 
     dt = str(datetime.now()).replace(':','-')
     dirpath = f"scrapedump/{folder}"
@@ -54,12 +57,12 @@ while runAgain:
 
     print(f"[{print_as}] Writing to {fpath}")
     writer = csv.writer(FILE)
-    writeScr(term,pgno,driver,writer)
+    writeScr(term,pgno,outStk,driver,writer)
 
     print(f"[{print_as}] Closing file connection")
     FILE.close()
     
-    runAgain = (input(f"[{print_as}] Run another query? (Y/N) ")).upper() == 'Y'
+    runAgain = (input(f"[{print_as}] Run another query? [Y/N(default)] ")).upper() == 'Y'
 
 print(f"[{print_as}] Closing driver connection")
 driver.quit()

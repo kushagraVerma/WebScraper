@@ -108,12 +108,12 @@ def parseOneB(resElt):
 
     return l
 
-def writeScr(term,pgno,driver,writer):
+def writeScr(term,pgno,outStk,driver,writer):
     writer.writerow(["Sponsored", "Title", "Stars (/5)", "Reviewers", "Price", "Available","Result#","Page#"])
     resCnt = 0
     loop = True
     for i in range(1,pgno+1):
-        urli = getURL(term, i)
+        urli = getURL(term, outStk, i)
         print(f"\n[{print_as}] Scraping page {i}: {urli}")
 
         driver.get(urli)
@@ -156,7 +156,10 @@ def writeScr(term,pgno,driver,writer):
             print(f"[{print_as}] Waiting for {randTime} seconds before loading next page...")
             sleep(randTime)
 
-def getURL(term,page):
-    return f"https://www.flipkart.com/search?q={term}&page={page}&p%5B%5D=facets.availability%255B%255D%3DInclude%2BOut%2Bof%2BStock"
+def getURL(term,outStk,page):
+    s = f"https://www.flipkart.com/search?q={term}&page={page}"
+    if(outStk):
+        s += "&p%5B%5D=facets.availability%255B%255D%3DInclude%2BOut%2Bof%2BStock"
+    return s
 
 fliptpl = (folder,writeScr)
