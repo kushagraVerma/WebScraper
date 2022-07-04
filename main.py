@@ -39,8 +39,8 @@ while runAgain:
             break
     pgno = 5
     try:
-        pgno = int(input(f"[{print_as}] Enter # of pages to scrape (max=9, default=5): "))
-        assert pgno<10
+        pgno = int(input(f"[{print_as}] Enter # of pages to scrape (max=20, default=5): "))
+        assert pgno<21
     except:
         pgno = 5
         print(f"[{print_as}] Defaulting to # of pages = 5")
