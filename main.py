@@ -5,12 +5,13 @@ from helper import *
 from chrdriver import *
 from amazscr import amaztpl
 from flipscr import fliptpl
+from bigbscr import bigbtpl
 # print(consts)
 # driver = getDriver(chrome_driver_path)
 
 def getSiteTpl():
-    siteList = ["Amazon India", "Flipkart"]
-    tplList = [amaztpl,fliptpl]
+    siteList = ["Amazon India", "Flipkart","BigBasket"]
+    tplList = [amaztpl,fliptpl,bigbtpl]
     print(f"[{print_as}] Select site to scrape:")
     for i in range(len(siteList)):
         print(f"\t{i} for {siteList[i]}")
