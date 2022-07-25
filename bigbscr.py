@@ -163,7 +163,7 @@ def writeScr(term,pgno,outStk,driver,writer):
         for child in children:
             vals = None
             try:
-                childpath = ".//div[@class='ng-scope']"
+                childpath = ".//div[@qa='product_name']/parent::div"
                 vals = child.find_element_by_xpath(childpath)
             except Exception as e:
                 log.append("NOVAL: "+str(e))
@@ -173,7 +173,7 @@ def writeScr(term,pgno,outStk,driver,writer):
                 # vals = imgDiv.find_element_by_xpath(".//following-sibling::div[1]")
             row,_log = parseOne(vals)
             # log.append(_log)
-            log.append(vals.text[:32])
+            # log.append(vals.text[:32])
             # row = parseOne(child)
             # row = list(range(6))
             matches = True
@@ -200,7 +200,7 @@ def writeScr(term,pgno,outStk,driver,writer):
     #     randTime = 0.5+random()
     #     print(f"[{print_as}] Waiting for {randTime} seconds before loading next page...")
     #     sleep(randTime)
-    print(log)
+    # print(log)
 
 def getURL(term,outStk,page):
     s = f"https://www.bigbasket.com/ps/?q={term}"

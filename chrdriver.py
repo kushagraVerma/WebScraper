@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 def getDriver(driver_path):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--ignore-certificate-errors-spki-list')
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=1920,1200")
     chrome_options.add_argument("log-level=3")
 
