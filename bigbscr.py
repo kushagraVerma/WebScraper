@@ -13,7 +13,7 @@ def parseOne(resElt):
 
     prodDiv = None
     try:
-        prodDiv = waitNLoad(resElt, 5, 'XPATH', ".//div[@qa='product_name']")
+        prodDiv = waitNLoad(resElt, 1, 'XPATH', ".//div[@qa='product_name']")
         # resElt.find_element_by_xpath(".//div[contains(@qa,'product')]")
     except Exception as e:
         log.append(str(e))
@@ -39,21 +39,22 @@ def parseOne(resElt):
     finally:
         l.append(titleS)
 
-    # starS = "DIDNOTLOAD"
-    # revS = "DIDNOTLOAD"
-    # try:
-    #     starSpan = resElt.find_element_by_xpath(".//span[contains(@aria-label,'out of 5 stars')]")
-    #     rating = starSpan.get_attribute("aria-label").split(' ')[0]
-    #     starS = f"{rating}"
-    #     byNum = starSpan.find_element_by_xpath(".//following-sibling::span[1]").get_attribute("aria-label")
-    #     revS = f"{byNum}"
-    # except:
-    #     pass
-    # finally:
-    #     l.append(starS)
-    #     l.append(revS)
-    l.append("N/A")
-    l.append("N/A")
+    starS = "DIDNOTLOAD"
+    revS = "DIDNOTLOAD"
+    try:
+        rDiv = waitNLoad(resElt, 1, 'XPATH', ".//div[@qa='rnr_section']")
+        # print(rDiv.text)
+        starSpan = rDiv.find_element_by_xpath(".//span[1]/span[1]/span[1]")
+        # print(starSpan.text)
+        # rating = starSpan.get_attribute("aria-label").split(' ')[0]
+        starS = f"{starSpan.text}"
+        byNum = rDiv.find_element_by_xpath(".//span[2]/span[1]")
+        revS = f"{byNum.text}"
+    except:
+        pass
+    finally:
+        l.append(starS)
+        l.append(revS)
 
     priceS = "DIDNOTLOAD"
     try:
@@ -144,13 +145,12 @@ def writeScr(term,pgno,outStk,driver,writer):
         return
     if pgno>1:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight*0.8);")
-        time.sleep(3)
+        time.sleep(2)
     # print(f"\n[{print_as}] Scraping page {i}: {urli}")
     log = []
     try:
         reslistPath = "//div[@class='items']"
         element = waitNLoad(driver, 3, 'XPATH', reslistPath)
-        time.sleep(4)
         resXpath = ".//div[@qa='product']"
         children = element.find_elements_by_xpath(resXpath)
         numRes = len(children)
@@ -176,14 +176,14 @@ def writeScr(term,pgno,outStk,driver,writer):
             # log.append(vals.text[:32])
             # row = parseOne(child)
             # row = list(range(6))
-            matches = True
-            for x in term.split('+'):
-                if(row[1].lower().find(x)<0):
-                    matches = False
-                    break
+            # matches = True
+            # for x in term.split('+'):
+            #     if(row[1].lower().find(x)<0):
+            #         matches = False
+            #         break
             currCnt += 1
-            if(row[1]=="DIDNOTLOAD" or not matches):
-                continue
+            # if(not matches):
+            #     continue
             resCnt += 1
             row.extend([resCnt,'N/A'])
             writer.writerow(row)
