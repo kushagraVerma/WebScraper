@@ -15,5 +15,6 @@ Edit chrome_driver_path in consts.txt according to your system<br>
 <h4>Running</h4>
 Windows users can quickly run by clicking on RUN.bat<br>
 Otherwise, run commands <code>cd path/to/WebScraper</code> and <code>python main.py</code><br>
+If cloned with Git, Windows users can use UPDATE.bat to pull the latest version while preserving consts.txt<br>
 <h4>Notes</h4>
 Selenium handshake failure errors can be ignored for the most part<br><br>
