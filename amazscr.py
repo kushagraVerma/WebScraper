@@ -132,7 +132,9 @@ def writeScr(term,pgno,outStk,driver,writer):
                 # if resCnt%(numRes//10)==0:
                 #     print('|',end='')
                 progBar(currCnt,numRes)
-
+        except:
+            print(" (skipped) ")
+            pass
         finally:
             print(" DONE")
             pass
