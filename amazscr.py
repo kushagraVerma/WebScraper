@@ -32,9 +32,12 @@ def parseOne(resElt):
         starSpan = resElt.find_element_by_xpath(".//span[contains(@aria-label,'out of 5 stars')]")
         rating = starSpan.get_attribute("aria-label").split(' ')[0]
         starS = f"{rating}"
-        byNum = starSpan.find_element_by_xpath(".//following-sibling::span[1]").get_attribute("aria-label")
+        # print(starSpan.find_element_by_xpath("../span[2]").text[1:-1],"\n")
+        byNum = starSpan.find_element_by_xpath("../span[2]").text
+        byNum = "".join([c for c in byNum if c.isdigit()])
         revS = f"{byNum}"
-    except:
+    except Exception as e:
+        print(e)
         pass
     finally:
         l.append(starS)
