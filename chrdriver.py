@@ -4,10 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-def getDriver(driver_path):
+def getDriver(driver_path,headless=False):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--ignore-certificate-errors-spki-list')
-    chrome_options.add_argument("--headless")
+    if headless:
+        chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=1920,1200")
     chrome_options.add_argument("log-level=3")
 

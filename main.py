@@ -28,8 +28,10 @@ def getSiteTpl():
 
 print(f"*** Welcome to {print_as}! ***")
 runAgain = True
+hlMsg = f"[{print_as}] Use head-less browser? (This removes sponsored items on Amazon!) [Y/N(default)] "
+hl = (input(hlMsg).upper() == 'Y')
 print(f"[{print_as}] Connecting to Chrome via driver")
-driver = getDriver(consts['chrome_driver_path'])
+driver = getDriver(consts['chrome_driver_path'],headless=hl)
 while runAgain:
     folder,writeScr = getSiteTpl()
     while True:
