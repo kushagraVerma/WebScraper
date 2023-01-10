@@ -111,6 +111,9 @@ def writeScr(term,pgno,outStk,driver,writer):
             element = waitNLoad(driver, 1, 'XPATH', reslistPath)
             resXpath = ".//div[@data-component-type='s-search-result']"
             children = element.find_elements_by_xpath(resXpath)
+            # othPath = ".//div[@data-component-type and not(@data-component-type='s-search-result')]"
+            # othCh = element.find_elements_by_xpath(othPath)
+            # print(len(othCh))
             numRes = len(children)
             print(f"[{print_as}] {numRes} results found")
             if(numRes==0):
