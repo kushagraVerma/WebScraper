@@ -6,14 +6,15 @@ from chrdriver import *
 from amazscr import amaztpl
 from flipscr import fliptpl
 from bigbscr import bigbtpl
+from flgrscr import flgrtpl
 # print(consts)
 # driver = getDriver(chrome_driver_path)
 
 def getSiteTpl():
     siteList = ["Amazon India", "Flipkart","BigBasket",
-            "Amazon Fresh"]
+            "Amazon Fresh", "Flipkart Grocery"]
     tplList = [amaztpl,fliptpl,bigbtpl,
-            ("amazon_fresh",lambda t,pgn,ostk,dr,wr: amaztpl[1](t,pgn,ostk,dr,wr,cat="fresh"))]
+            ("amazon_fresh",lambda t,pgn,ostk,dr,wr: amaztpl[1](t,pgn,ostk,dr,wr,cat="fresh")), flgrtpl]
     print(f"[{print_as}] Select site to scrape:")
     for i in range(len(siteList)):
         print(f"\t{i} for {siteList[i]}")
