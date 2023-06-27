@@ -97,12 +97,12 @@ def parseOne(resElt):
 
     return l
 
-def writeScr(term,pgno,outStk,driver,writer):
+def writeScr(term,pgno,outStk,driver,writer,cat=None):
     writer.writerow(["Sponsored", "Title", "Stars (/5)", "Reviewers", "Price", "Available","Result#","Page#"])
     resCnt = 0
     loop = True
     for i in range(1,pgno+1):
-        urli = getURL(term, outStk, i)
+        urli = getURL(term, outStk, i, cat=cat)
         print(f"\n[{print_as}] Scraping page {i}: {urli}")
 
         driver.get(urli)
@@ -151,8 +151,10 @@ def writeScr(term,pgno,outStk,driver,writer):
             print(f"[{print_as}] Waiting for {randTime} seconds before loading next page...")
             sleep(randTime)
 
-def getURL(term,outStk,page):
+def getURL(term,outStk,page,cat):
     s = f"https://www.amazon.in/s?k={term}&page={page}"
+    if(cat is not None):
+        s += f"&i={cat}"
     if(outStk):
         s += "&rh=p_n_availability%3A1318485031"
     return s

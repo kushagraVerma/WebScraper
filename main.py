@@ -10,8 +10,10 @@ from bigbscr import bigbtpl
 # driver = getDriver(chrome_driver_path)
 
 def getSiteTpl():
-    siteList = ["Amazon India", "Flipkart","BigBasket"]
-    tplList = [amaztpl,fliptpl,bigbtpl]
+    siteList = ["Amazon India", "Flipkart","BigBasket",
+            "Amazon Fresh"]
+    tplList = [amaztpl,fliptpl,bigbtpl,
+            ("amazon_fresh",lambda t,pgn,ostk,dr,wr: amaztpl[1](t,pgn,ostk,dr,wr,cat="fresh"))]
     print(f"[{print_as}] Select site to scrape:")
     for i in range(len(siteList)):
         print(f"\t{i} for {siteList[i]}")
