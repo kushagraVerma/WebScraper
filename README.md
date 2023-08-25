@@ -1,7 +1,7 @@
 <h1>Webscraper v3</h1>
-Webscraping application made in Python<br>
+Webscraping application made in Python to process online marketplace data for different products on various platforms<br>
 Uses Selenium and Chrome driver to open webpages in a headless (invisible) browser and access their contents<br>
-Currently scrapable: Amazon India, Flipkart<br>
+Currently scrapable: Amazon India, Flipkart, BigBasket<br>
 <h3>USAGE</h3>
 <h4>Setup</h4>
 Required on your system:<br>
