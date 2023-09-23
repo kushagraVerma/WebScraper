@@ -8,7 +8,7 @@ Required on your system:<br>
 <ul>
   <li>Python (added to PATH): Install from https://www.python.org/downloads/ and add to PATH variable</li>
   <li>Chrome: Install from https://www.google.com/intl/en_us/chrome/</li>
-  <li>Chrome Driver: Download from https://chromedriver.chromium.org/downloads</li>
+  <li>Chrome Driver: Download (same version as Chrome!) from https://chromedriver.chromium.org/downloads (versions <= 114) or https://googlechromelabs.github.io/chrome-for-testing (versions >= 115)</li>
   <li>Selenium module for Python: Run command <code>pip install selenium</code></li>
 </ul>
 Edit chrome_driver_path in consts.txt according to your system<br>
