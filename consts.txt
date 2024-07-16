@@ -1,1 +1,1 @@
-chrome_driver_path=C:\Program Files\win32_chromedriver\chromedriver
+chrome_driver_path=C:\Program Files\win32_chromedriver\chromedriver.exe

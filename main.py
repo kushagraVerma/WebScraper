@@ -1,72 +1,79 @@
 from os import path,makedirs
 from datetime import datetime
-import csv
-from helper import *
-from chrdriver import *
-from amazscr import amaztpl
-from flipscr import fliptpl
-from bigbscr import bigbtpl
-from flgrscr import flgrtpl
-# print(consts)
-# driver = getDriver(chrome_driver_path)
+from common import *
+from amazonScraper import AmazonScraper
+from flipkartScraper import FlipkartScraper
+from bigbasketScraper import BigbasketScraper
 
-def getSiteTpl():
-    siteList = ["Amazon India", "Flipkart","BigBasket",
-            "Amazon Fresh", "Flipkart Grocery"]
-    tplList = [amaztpl,fliptpl,bigbtpl,
-            ("amazon_fresh",lambda t,pgn,ostk,dr,wr: amaztpl[1](t,pgn,ostk,dr,wr,cat="fresh")), flgrtpl]
+def getScraper() -> Scraper:
+    scrapers = [
+        AmazonScraper(),
+        FlipkartScraper(),
+        BigbasketScraper(),
+        AmazonScraper(category='fresh'),
+        FlipkartScraper(category='GROCERY')
+    ]
     print(f"[{print_as}] Select site to scrape:")
-    for i in range(len(siteList)):
-        print(f"\t{i} for {siteList[i]}")
+    for i,scraper in enumerate(scrapers):
+        print(f"\t{i+1} for {scraper.name}")
     inp = None
     while True:
         try:
             inp = int(input())
-            if inp>=0 and inp<len(siteList):
+            if inp>0 and inp<=len(scrapers):
                 break
+            else:
+                raise ValueError("Error!")
         except:
             print(f"[{print_as}] Invalid input, please select from the above options!")
-    print(f"[{print_as}] Selected {siteList[inp]}")
-    return tplList[inp]
+    scraper = scrapers[inp-1]
+    print(f"[{print_as}] Selected {scraper.name}")
+    return scraper
 
 print(f"*** Welcome to {print_as}! ***")
 runAgain = True
 hlMsg = f"[{print_as}] Use head-less browser? (This removes sponsored items on Amazon!) [Y/N(default)] "
 hl = (input(hlMsg).upper() == 'Y')
 print(f"[{print_as}] Connecting to Chrome via driver")
-driver = getDriver(consts['chrome_driver_path'],headless=hl)
+driver = getDriver(headless=hl)
 while runAgain:
-    folder,writeScr = getSiteTpl()
+    scraper = getScraper()
     while True:
-        term = input(f"[{print_as}] Enter search term: ").replace(' ','+')
+        term = input(f"[{print_as}] Enter search term: ").strip().replace(' ','+')
         if term=='':
-            print("Empty search term is not allowed!")
+            print(f"[{print_as}] Empty search term is not allowed!")
         else:
             break
-    pgno = 5
-    try:
-        pgno = int(input(f"[{print_as}] Enter # of pages to scrape (max=20, default=5): "))
-        assert pgno<21
-    except:
-        pgno = 5
-        print(f"[{print_as}] Defaulting to # of pages = 5")
+    npages = 5
+    if not isinstance(scraper, BigbasketScraper):
+        try:
+            npages = int(input(f"[{print_as}] Enter # of pages to scrape (max=20, default=5): "))
+            assert npages<=scraper.getPageLimit()
+        except:
+            npages = 5
+            print(f"[{print_as}] Defaulting to # of pages = 5")
     
     outStkMsg = f"[{print_as}] Include out of stock items? (This removes sponsored items on Amazon!) [Y/N(default)] "
     outStk = (input(outStkMsg).upper() == 'Y')
 
-    dt = str(datetime.now()).replace(':','-')
-    dirpath = f"scrapedump/{folder}"
-    if not path.exists(dirpath):
-        makedirs(dirpath)
-    fpath = f"{dirpath}/{term}@{dt}.csv"
-    FILE = open(fpath,"a",encoding="utf-8",newline='')
-
-    print(f"[{print_as}] Writing to {fpath}")
-    writer = csv.writer(FILE)
-    writeScr(term,pgno,outStk,driver,writer)
-
-    print(f"[{print_as}] Closing file connection")
-    FILE.close()
+    resultItems: ResultItems = scraper.scrape(
+        driver=driver,
+        term=term,
+        maxPages=npages,
+        outOfStock=outStk,
+        silent=False
+    )
+    
+    if resultItems.isEmpty():
+        print(f"[{print_as}] No results found!")
+    else:
+        dt = str(datetime.now()).replace(':','-')
+        dirpath = f"scrapedump/{scraper.folder}"
+        if not path.exists(dirpath):
+            makedirs(dirpath)
+        fpath = f"{dirpath}/{term}@{dt}.csv"
+        print(f"[{print_as}] Writing to {fpath}")
+        resultItems.writeToCSV(filepath=fpath)
     
     runAgain = (input(f"[{print_as}] Run another query? [Y/N(default)] ")).upper() == 'Y'
 
