@@ -2,6 +2,7 @@ from common import *
 from urllib.parse import urlparse,parse_qs
 
 class BigbasketScraper(Scraper):
+    __page_limit__ = 8
     def __init__(self) -> None:
         super().__init__(name="BigBasket",folder="bigbasket",isPageWise=False)
 
@@ -44,6 +45,16 @@ class BigbasketScraper(Scraper):
             price = None
         finally:
             item.initialize("Price",price)
+            
+        try:
+            unitSpanPath = ".//span[contains(@class,'PackChanger') or contains(@class,'PackSelector')]"
+            units = resultElt.find_element(By.XPATH,unitSpanPath).text
+        except Exception as e:
+            if self.isDebug():
+                print(e)
+            units = None
+        finally:
+            item.initialize('Units',units)
 
         try:
             availableElt = loadElement(

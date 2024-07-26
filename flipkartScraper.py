@@ -62,6 +62,18 @@ class FlipkartScraper(Scraper):
                 print(e)
             price = None
         item.initialize('Price',price)
+        
+        try:
+            if self.category=="GROCERY":
+                unitDiv = resultElt.find_element(By.XPATH,f".//button[not({strictlyContains('.','Add')})]//div[not(child::*)][1]")
+            else:
+                unitDiv = resultElt.find_element(By.XPATH,f".//div[{strictlyContains('class', 'NqpwHC')}]")
+            units = unitDiv.text
+        except Exception as e:
+            if self.isDebug():
+                print(e)
+            units = None
+        item.initialize('Units',units)
 
         try:
             containerPath = "." if "tiles" in flags else ".."

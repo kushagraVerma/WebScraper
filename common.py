@@ -50,7 +50,8 @@ def loadElement(parent: Union[WebElement,webdriver.Chrome], by: str, query: str,
     )
 
 def strictlyContains(tagName: str, query: str) -> str:
-    return f"contains(concat(' ', normalize-space(@{tagName}), ' '), ' {query} ')"
+    searchIn = '@'+tagName if tagName!='.' else '.'
+    return f"contains(concat(' ', normalize-space({searchIn}), ' '), ' {query} ')"
 def lowerCase(s: str) -> str:
     return f"translate({s}, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"
 
@@ -79,14 +80,12 @@ class ResultItems:
 
 Flags = Set[str]
 class Scraper:
-    __debug_mode__ = False
     @staticmethod
     def isDebug() -> bool:
-        return Scraper.__debug_mode__
+        return False
     __page_limit__ = 20
-    @staticmethod
-    def getPageLimit() -> int:
-        return Scraper.__page_limit__
+    def getPageLimit(self) -> int:
+        return self.__page_limit__
     def __init__(self, name: str, folder: str, isPageWise: bool = True) -> None:
         self.name = name
         self.folder = folder
