@@ -25,7 +25,7 @@ class FlipkartScraper(Scraper):
         
         try:
             if "tiles" in flags:
-                title = resultElt.find_element(By.XPATH,".//a[boolean(@title) and not(descendant::img)]").text
+                title = resultElt.find_element(By.XPATH,".//a[boolean(@title) and not(descendant::img)]").get_attribute("title")
             else:
                 title = resultElt.find_element(By.XPATH,".//div[@class='KzDlHZ']").text
         except Exception as e:
@@ -111,9 +111,8 @@ class FlipkartScraper(Scraper):
             )
         except:
             return True
-        pincode = ""
+        pincode = input(f"[{print_as}] Flipkart Grocery requires a valid pincode (only local results will appear): ")
         while True:
-            pincode = input(f"[{print_as}] Flipkart Grocery requires a valid pincode (only local results will appear): ")
             if pincode.isnumeric() and len(pincode)==6:
                 try:
                     formElt.send_keys(f"{pincode}")
@@ -130,11 +129,15 @@ class FlipkartScraper(Scraper):
                         maxWait=2
                     )
                     print("Not available for this area!")
-                    return False
                 except:
                     return True
             else:
                 print("Invalid pincode!")
+            stop = input(f"[{print_as}] Try again? [Y(default)/N] ").upper() == 'N'
+            if stop:
+                return False
+            else:
+                pincode = input(f"[{print_as}] Enter valid pincode: ")
 
     def getResultList(self, driver: webdriver.Chrome) -> List[Tuple[WebElement,Flags]]:
         resultList: List[Tuple[WebElement,Flags]] = []
