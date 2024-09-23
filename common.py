@@ -44,10 +44,17 @@ def getDriver(driver_path: str = consts["chrome_driver_path"], headless: bool =F
         options=chrome_options
     )
 
-def loadElement(parent: Union[WebElement,webdriver.Chrome], by: str, query: str, maxWait: float = 0.1) -> WebElement:
-    return WebDriverWait(parent, maxWait).until(
-        EC.presence_of_element_located((getattr(By, by), query))
-    )
+def loadElement(
+    parent: Union[WebElement,webdriver.Chrome], by: str, query: str, 
+    maxWait: float = 0.1, awaitVisible: bool = False, awaitClickable: bool = False
+) -> WebElement:
+    searchArgs = (getattr(By, by), query)
+    searchMethod = EC.presence_of_element_located
+    if awaitVisible:
+        searchMethod = EC.visibility_of_element_located
+    if awaitClickable:
+        searchMethod = EC.element_to_be_clickable
+    return WebDriverWait(parent, maxWait).until(searchMethod(searchArgs))
 
 def strictlyContains(tagName: str, query: str) -> str:
     searchIn = '@'+tagName if tagName!='.' else '.'
