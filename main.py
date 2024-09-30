@@ -5,6 +5,7 @@ from amazonScraper import AmazonScraper
 from flipkartScraper import FlipkartScraper
 from bigbasketScraper import BigbasketScraper
 from familydollarScraper import FamilyDollarScraper
+from kotsovolosScraper import KotsovolosScraper
 
 def getScraper() -> Scraper:
     scrapers = [
@@ -13,7 +14,8 @@ def getScraper() -> Scraper:
         BigbasketScraper(),
         AmazonScraper(category='fresh'),
         FlipkartScraper(category='GROCERY'),
-        FamilyDollarScraper()
+        FamilyDollarScraper(),
+        KotsovolosScraper()
     ]
     print(f"[{print_as}] Select site to scrape:")
     for i,scraper in enumerate(scrapers):
