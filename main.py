@@ -6,8 +6,9 @@ from flipkartScraper import FlipkartScraper
 from bigbasketScraper import BigbasketScraper
 from familydollarScraper import FamilyDollarScraper
 from kotsovolosScraper import KotsovolosScraper
+from zeptoScraper import ZeptoScraper
 
-def getScraper() -> Scraper:
+def getScraper(headless) -> Scraper:
     scrapers = [
         AmazonScraper(),
         FlipkartScraper(),
@@ -17,6 +18,10 @@ def getScraper() -> Scraper:
         FamilyDollarScraper(),
         KotsovolosScraper()
     ]
+    if not headless:
+        scrapers.extend([
+            ZeptoScraper()
+        ])
     print(f"[{print_as}] Select site to scrape:")
     for i,scraper in enumerate(scrapers):
         print(f"\t{i+1} for {scraper.name}")
@@ -36,12 +41,13 @@ def getScraper() -> Scraper:
 
 print(f"*** Welcome to {print_as}! ***")
 runAgain = True
-hlMsg = f"[{print_as}] Use head-less browser? (This removes sponsored items on Amazon!) [Y/N(default)] "
+hlMsg = f"[{print_as}] Use head-less browser? [Y/N(default)]"
+hlMsg += "\n(This removes quick commerce sites and sponsored items on Amazon!)  "
 hl = (input(hlMsg).upper() == 'Y')
 print(f"[{print_as}] Connecting to Chrome via driver")
 driver = getDriver(headless=hl)
 while runAgain:
-    scraper = getScraper()
+    scraper = getScraper(headless=hl)
     while True:
         term = input(f"[{print_as}] Enter search term: ").strip().replace(' ','+')
         if term=='':
@@ -49,7 +55,7 @@ while runAgain:
         else:
             break
     npages = 5
-    if not isinstance(scraper, BigbasketScraper):
+    if scraper.isPageWise:
         try:
             npages = int(input(f"[{print_as}] Enter # of pages to scrape (max=20, default=5): "))
             assert npages<=scraper.getPageLimit()
