@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 with open('consts.txt','r') as f:
-    keyvals = [line.split("=",maxsplit=1) for line in f.readlines()]
+    keyvals = [line.strip().split("=",maxsplit=1) for line in f.readlines()]
 consts: Dict[str,str] = {keyval[0]:keyval[1] for keyval in keyvals}
 print_as: str = "Webscraper v4"
 
@@ -89,7 +89,7 @@ Flags = Set[str]
 class Scraper:
     @staticmethod
     def isDebug() -> bool:
-        return False
+        return consts.get("debug") is not None
     __page_limit__ = 20
     def getPageLimit(self) -> int:
         return self.__page_limit__

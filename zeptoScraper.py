@@ -70,6 +70,8 @@ class ZeptoScraper(Scraper):
                 )
                 input(f"[{print_as}] Enter the location in the browser, then press ENTER in this terminal")
             except Exception as e:
+                if self.isDebug():
+                    print("Error trying to get location popup\n",e)
                 break
 
         prodCardPath = "//a[@data-testid='product-card']"
@@ -86,6 +88,8 @@ class ZeptoScraper(Scraper):
         while len(resultIterator)>nElts and nScrolls<self.getPageLimit():
             nElts = len(resultIterator)
             resultIterator = driver.find_elements(By.XPATH,prodCardPath)
+            driver.execute_script("arguments[0].scrollIntoView();",resultIterator[-1])
+            sleep(1)
             nScrolls += 1
         
         if not silent:
