@@ -40,8 +40,8 @@ class AmazonScraper(Scraper):
                 starSpan = resultElt.find_element(By.XPATH,f".//i[{strictlyContains('class','a-icon-star-mini')}]//span")
                 rating = starSpan.text.split(' ')[0]
             else:
-                starSpan = resultElt.find_element(By.XPATH,f".//span[{strictlyContains('aria-label','out of 5 stars')}]")
-                rating = starSpan.get_attribute("aria-label").split(' ')[0]
+                starSpan = resultElt.find_element(By.XPATH,f".//i[@data-cy='reviews-ratings-slot']/span")
+                rating = starSpan.get_attribute("innerText").split(' ')[0]
         except Exception as e:
             if self.isDebug():
                 print(e)
@@ -54,8 +54,8 @@ class AmazonScraper(Scraper):
                 nRatingSpan = resultElt.find_element(By.XPATH,f".//i[{strictlyContains('class','a-icon-star-mini')}]/following-sibling::span")
                 nRating = nRatingSpan.text.split(' ')[0]
             else:
-                nRatingSpan = resultElt.find_element(By.XPATH,f".//span[{strictlyContains('aria-label','ratings')}]")
-                nRating = nRatingSpan.get_attribute("aria-label").split(' ')[0]
+                nRatingSpan = resultElt.find_element(By.XPATH,f".//a[contains(@aria-label,' ratings')]/span")
+                nRating = nRatingSpan.text
         except Exception as e:
             if self.isDebug():
                 print(e)
