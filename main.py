@@ -7,6 +7,7 @@ from bigbasketScraper import BigbasketScraper
 from familydollarScraper import FamilyDollarScraper
 from kotsovolosScraper import KotsovolosScraper
 from zeptoScraper import ZeptoScraper
+from blinkitScraper import BlinkitScraper
 
 def getScraper(headless) -> Scraper:
     scrapers = [
@@ -20,7 +21,8 @@ def getScraper(headless) -> Scraper:
     ]
     if not headless:
         scrapers.extend([
-            ZeptoScraper()
+            ZeptoScraper(),
+            BlinkitScraper(),
         ])
     print(f"[{print_as}] Select site to scrape:")
     for i,scraper in enumerate(scrapers):
