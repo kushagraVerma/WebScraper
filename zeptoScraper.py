@@ -13,27 +13,43 @@ class ZeptoScraper(Scraper):
         item = super().parseOne(resultElt,pgno)
         
         try:
-            title = resultElt.find_element(By.XPATH,".//h5").text
+            titleElt = resultElt.find_element(By.XPATH,".//h5")
+            title = titleElt.text
         except Exception as e:
             if self.isDebug():
                 print(e)
             title = None
         item.initialize('Title',title)
 
-        item.initialize('Rating (/5 stars)',"N/A")
-
-        item.initialize('# of Ratings',"N/A")
+        try:
+            ratingDiv = titleElt.find_element(By.XPATH,"./following::div[1]")
+            ratings = ratingDiv.find_element(By.XPATH,".//p[1]").text
+            nRatings = ratingDiv.find_element(By.XPATH,".//p[2]").text.strip("()")
+        except Exception as e:
+            if self.isDebug():
+                print(e)
+            ratings = None
+            nRatings = None
+        item.initialize('Rating (/5 stars)',ratings)
+        item.initialize('# of Ratings',nRatings)
         
         try:
-            price = resultElt.find_element(By.XPATH,".//h4[@data-testid='product-card-price']").text[1:]
+            pricingDiv = resultElt.find_element(By.XPATH,".//img[@data-testid='product-card-image']/parent::div/following::div[1]")
+            price = pricingDiv.find_element(By.XPATH,".//p[1]").text[1:]
+            try:
+                originalPrice = pricingDiv.find_element(By.XPATH,".//p[2]").text[1:]
+            except Exception as e:
+                originalPrice = price
         except Exception as e:
             if self.isDebug():
                 print(e)
             price = None
+            originalPrice = None
         item.initialize('Price',price)
+        item.initialize('Original Price',originalPrice)
         
         try:
-            units = resultElt.find_element(By.XPATH,f".//span[@data-testid='product-card-quantity']/h4").text
+            units = ratingDiv.find_element(By.XPATH,f"./following::div[1]").text
         except Exception as e:
             if self.isDebug():
                 print(e)

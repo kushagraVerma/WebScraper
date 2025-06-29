@@ -85,7 +85,6 @@ class BlinkitScraper(Scraper):
             driver.execute_script("arguments[0].scrollIntoView();",resultIterator[-1])
             sleep(1)
             nScrolls += 1
-            print(len(resultIterator), nElts, nScrolls)
         
         if not silent:
             resultIterator = tqdm(resultIterator, desc=f"[{print_as}] Parsing results")
